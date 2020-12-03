@@ -30,11 +30,11 @@ impl ForestMap {
         let rows = raw_map
             .split('\n')
             .map(|line| line.trim())
-            .map(|row| row
-                .chars()
-                .map(|entry| entry.to_string().parse::<MapEntry>().unwrap())
-                .collect::<Vec<MapEntry>>()
-            )
+            .map(|row| {
+                row.chars()
+                    .map(|entry| entry.to_string().parse::<MapEntry>().unwrap())
+                    .collect::<Vec<MapEntry>>()
+            })
             .collect::<Vec<Vec<MapEntry>>>();
 
         ForestMap { rows }
@@ -50,7 +50,7 @@ impl ForestMap {
                 return entry == &MapEntry::Tree;
             }
         }
-        
+
         false
     }
 }
@@ -82,7 +82,9 @@ fn main() {
         count_trees_for_slope(&map, 5, 1),
         count_trees_for_slope(&map, 7, 1),
         count_trees_for_slope(&map, 1, 2),
-    ].iter().product::<usize>();
+    ]
+    .iter()
+    .product::<usize>();
 
     println!("[part 2] Trees: {:?}", trees_part2);
 }
@@ -94,7 +96,8 @@ mod tests {
     #[test]
     fn counts_trees_for_example_map() {
         // given
-        let map = ForestMap::parse("
+        let map = ForestMap::parse(
+            "
             ..##.......
             #...#...#..
             .#....#..#.
@@ -106,7 +109,9 @@ mod tests {
             #.##...#...
             #...##....#
             .#..#...#.#
-        ".trim());
+        "
+            .trim(),
+        );
 
         // when
         let trees = count_trees_for_slope(&map, 3, 1);
