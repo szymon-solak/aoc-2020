@@ -12,17 +12,18 @@ impl Seat {
     pub fn parse_from_binary_spec(spec: Vec<char>) -> Seat {
         let (row, cols) = spec
             .iter()
-            .fold(((0..127), (0..7)), |(rows, cols), &m| {
-                match m {
-                    'F' => ((rows.start..rows.end - (rows.len() / 2 + 1)), cols),
-                    'B' => ((rows.start + (rows.len() / 2 + 1)..rows.end), cols),
-                    'L' => (rows, (cols.start..cols.end - (cols.len() / 2 + 1))),
-                    'R' => (rows, (cols.start + ((cols.len() / 2) + 1)..cols.end)),
-                    _ => (rows, cols),
-                }
+            .fold(((0..127), (0..7)), |(rows, cols), &m| match m {
+                'F' => ((rows.start..rows.end - (rows.len() / 2 + 1)), cols),
+                'B' => ((rows.start + (rows.len() / 2 + 1)..rows.end), cols),
+                'L' => (rows, (cols.start..cols.end - (cols.len() / 2 + 1))),
+                'R' => (rows, (cols.start + ((cols.len() / 2) + 1)..cols.end)),
+                _ => (rows, cols),
             });
 
-        Seat { row: row.start, column: cols.start }
+        Seat {
+            row: row.start,
+            column: cols.start,
+        }
     }
 
     pub fn get_id(&self) -> usize {
@@ -56,5 +57,10 @@ fn main() {
     let max_id = seat_ids.iter().max().unwrap().to_owned();
 
     println!("[part 1] {:?}", max_id);
-    println!("[part 2] {:?}", (min_id..max_id).filter(|id| !seat_ids.contains(id)).collect::<Vec<usize>>());
+    println!(
+        "[part 2] {:?}",
+        (min_id..max_id)
+            .filter(|id| !seat_ids.contains(id))
+            .collect::<Vec<usize>>()
+    );
 }
